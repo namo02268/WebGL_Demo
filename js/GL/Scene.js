@@ -1,5 +1,5 @@
-function drawScene(gl, programInfo) {
-  gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
+function drawScene(gl, programInfo, buffers) {
+  gl.clearColor(0.2, 0.2, 0.2, 1.0); // Clear to black, fully opaque
   gl.clearDepth(1.0); // Clear everything
   gl.enable(gl.DEPTH_TEST); // Enable depth testing
   gl.depthFunc(gl.LEQUAL); // Near things obscure far things
@@ -18,11 +18,12 @@ function drawScene(gl, programInfo) {
   mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
 
   {
-    const numComponents = 2;
+    const numComponents = 2
     const type = gl.FLOAT;
     const normalize = false;
     const stride = 0;
     const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
     gl.vertexAttribPointer(
       programInfo.attribLocations.vertexPosition,
       numComponents,
@@ -32,6 +33,24 @@ function drawScene(gl, programInfo) {
       offset
     );
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+  }
+
+  {
+    const numComponents = 4
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+    gl.vertexAttribPointer(
+      programInfo.attribLocations.vertexColor,
+      numComponents,
+      type,
+      normalize,
+      stride,
+      offset
+    );
+    gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
   }
 
   gl.useProgram(programInfo.program);
