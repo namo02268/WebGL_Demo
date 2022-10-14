@@ -1,4 +1,18 @@
-function drawScene(gl, programInfo, buffers) {
+function drawScene(gl, programInfo) {
+  const positions = [1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, -1.0];
+  const colors = [
+    1.0, 1.0, 1.0, 1.0,
+    1.0, 0.0, 0.0, 1.0,
+    0.0, 1.0, 0.0, 1.0,
+    0.0, 0.0, 1.0, 1.0,
+  ];
+
+  const positionBuffer = new Buffer(gl);
+  positionBuffer.setData(positions);
+  const colorBuffer = new Buffer(gl);
+  colorBuffer.setData(colors);
+
+
   gl.clearColor(0.2, 0.2, 0.2, 1.0); // Clear to black, fully opaque
   gl.clearDepth(1.0); // Clear everything
   gl.enable(gl.DEPTH_TEST); // Enable depth testing
@@ -23,7 +37,7 @@ function drawScene(gl, programInfo, buffers) {
     const normalize = false;
     const stride = 0;
     const offset = 0;
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+    positionBuffer.Bind();
     gl.vertexAttribPointer(
       programInfo.attribLocations.vertexPosition,
       numComponents,
@@ -41,7 +55,7 @@ function drawScene(gl, programInfo, buffers) {
     const normalize = false;
     const stride = 0;
     const offset = 0;
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+    colorBuffer.Bind();
     gl.vertexAttribPointer(
       programInfo.attribLocations.vertexColor,
       numComponents,

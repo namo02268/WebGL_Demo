@@ -54,7 +54,5 @@ function main() {
     },
   };
 
-  const buffers = initBuffers(gl);
-
-  drawScene(gl, programInfo, buffers);
+  drawScene(gl, programInfo);
 }

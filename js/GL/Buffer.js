@@ -21,3 +21,19 @@ function initBuffers(gl) {
     color: colorBuffer,
   };
 }
+
+class Buffer {
+  constructor(gl) {
+    this.gl = gl;
+    this.id = gl.createBuffer();
+  }
+
+  Bind() {
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.id);
+  }
+
+  setData(data) {
+    this.Bind();
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(data), this.gl.STATIC_DRAW);
+  }
+}
