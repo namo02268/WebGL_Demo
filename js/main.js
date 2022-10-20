@@ -1,3 +1,4 @@
+let gl;
 window.onload = main;
 
 //
@@ -5,7 +6,7 @@ window.onload = main;
 //
 function main() {
   const canvas = document.querySelector("#glCanvas");
-  const gl = canvas.getContext("webgl");
+  gl = canvas.getContext("webgl");
 
   if (!gl) {
     alert(
@@ -37,22 +38,6 @@ function main() {
     }
   `;
 
-  const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
-
-  const programInfo = {
-    program: shaderProgram,
-    attribLocations: {
-      vertexPosition: gl.getAttribLocation(shaderProgram, "aVertexPosition"),
-      vertexColor: gl.getAttribLocation(shaderProgram, "aVertexColor"),
-    },
-    uniformLocations: {
-      projectionMatrix: gl.getUniformLocation(
-        shaderProgram,
-        "uProjectionMatrix"
-      ),
-      modelViewMatrix: gl.getUniformLocation(shaderProgram, "uModelViewMatrix"),
-    },
-  };
-
-  drawScene(gl, programInfo);
+  const shader = new Shader(vsSource, fsSource);
+  drawScene(gl, shader);
 }

@@ -1,4 +1,4 @@
-function drawScene(gl, programInfo) {
+function drawScene(gl, shader) {
   const positions = [1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, -1.0];
   const colors = [
     1.0, 1.0, 1.0, 1.0,
@@ -7,19 +7,20 @@ function drawScene(gl, programInfo) {
     0.0, 0.0, 1.0, 1.0,
   ];
 
+  //-------------------Buffer-------------------//
   const positionBuffer = new Buffer(gl);
-  positionBuffer.setData(positions);
+  positionBuffer.SetData(positions);
   const colorBuffer = new Buffer(gl);
-  colorBuffer.setData(colors);
+  colorBuffer.SetData(colors);
 
-
+  //-------------------Window-------------------//
   gl.clearColor(0.2, 0.2, 0.2, 1.0); // Clear to black, fully opaque
   gl.clearDepth(1.0); // Clear everything
   gl.enable(gl.DEPTH_TEST); // Enable depth testing
   gl.depthFunc(gl.LEQUAL); // Near things obscure far things
-
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+  //-------------------Camera-------------------//
   const fieldOfView = (45 * Math.PI) / 180; // in radians
   const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
   const zNear = 0.1;
@@ -27,10 +28,10 @@ function drawScene(gl, programInfo) {
 
   const projectionMatrix = mat4.create();
   mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
-
   const modelViewMatrix = mat4.create();
   mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
 
+  //-------------------A-------------------//
   {
     const numComponents = 2
     const type = gl.FLOAT;
@@ -39,14 +40,14 @@ function drawScene(gl, programInfo) {
     const offset = 0;
     positionBuffer.Bind();
     gl.vertexAttribPointer(
-      programInfo.attribLocations.vertexPosition,
+      shader.GetAttribLocation("aVertexPosition"),
       numComponents,
       type,
       normalize,
       stride,
       offset
     );
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+    gl.enableVertexAttribArray(shader.GetAttribLocation("aVertexPosition"));
   }
 
   {
@@ -57,28 +58,19 @@ function drawScene(gl, programInfo) {
     const offset = 0;
     colorBuffer.Bind();
     gl.vertexAttribPointer(
-      programInfo.attribLocations.vertexColor,
+      shader.GetAttribLocation("aVertexColor"),
       numComponents,
       type,
       normalize,
       stride,
       offset
     );
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
+    gl.enableVertexAttribArray(shader.GetAttribLocation("aVertexColor"));
   }
 
-  gl.useProgram(programInfo.program);
-
-  gl.uniformMatrix4fv(
-    programInfo.uniformLocations.projectionMatrix,
-    false,
-    projectionMatrix
-  );
-  gl.uniformMatrix4fv(
-    programInfo.uniformLocations.modelViewMatrix,
-    false,
-    modelViewMatrix
-  );
+  shader.Bind();
+  shader.SetUniformMatrix4("uProjectionMatrix", projectionMatrix);
+  shader.SetUniformMatrix4("uModelViewMatrix", modelViewMatrix);
 
   {
     const offset = 0;
