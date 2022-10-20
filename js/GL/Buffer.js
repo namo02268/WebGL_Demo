@@ -1,13 +1,13 @@
 class VertexBuffer {
   // private member variables
-  #m_id;
+  #m_handle;
 
   constructor(type) {
-    this.#m_id = gl.createBuffer();
+    this.#m_handle = gl.createBuffer();
   }
 
   Bind() {
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.#m_id);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.#m_handle);
   }
 
   SetData(data) {
@@ -16,20 +16,20 @@ class VertexBuffer {
   }
 
   GetID() {
-    return this.#m_id;
+    return this.#m_handle;
   }
 }
 
 class IndexBuffer {
   // private member variables
-  #m_id;
+  #m_handle;
 
   constructor(type) {
-    this.#m_id = gl.createBuffer();
+    this.#m_handle = gl.createBuffer();
   }
 
   Bind() {
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.#m_id);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.#m_handle);
   }
 
   SetData(data) {
@@ -38,6 +38,6 @@ class IndexBuffer {
   }
 
   GetID() {
-    return this.#m_id;
+    return this.#m_handle;
   }
 }
