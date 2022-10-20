@@ -1,6 +1,8 @@
 let cubeRotation = 0.0;
 
 function drawScene(deltaTime, camera, shader, buffers) {
+  Resize(camera);
+
   //-------------------Window-------------------//
   gl.clearColor(0.2, 0.2, 0.2, 1.0); // Clear to black, fully opaque
   gl.clearDepth(1.0); // Clear everything
@@ -66,5 +68,17 @@ function drawScene(deltaTime, camera, shader, buffers) {
     const offset = 0;
     buffers.index.Bind();
     gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+  }
+}
+
+function Resize(camera) {
+  const displayWidth = gl.canvas.clientWidth;
+  const displayHeight = gl.canvas.clientHeight;
+
+  if (gl.canvas.width !== displayWidth || gl.canvas.height !== displayHeight) {
+    gl.canvas.width = displayWidth;
+    gl.canvas.height = displayHeight;
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    camera.Resize(gl.canvas.width, gl.canvas.height);
   }
 }

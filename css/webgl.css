@@ -1,6 +1,9 @@
 canvas {
-  border: 2px solid black;
-  background-color: black;
+  background-color: block;
+  display: block;
+  /* prevents scrollbar */
+  width: 100vw;
+  height: 100vh;
 }
 
 video {

@@ -5,12 +5,16 @@ class Camera {
   #zFar;
   #projectionMatrix;
 
-  constructor() {
+  constructor(width, height) {
     this.#fov = (45 * Math.PI) / 180;
-    this.#aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    this.#aspect = width / height;
     this.#zNear = 0.1;
     this.#zFar = 100.0;
     this.#projectionMatrix = mat4.create();
+  }
+
+  Resize(width, height) {
+    this.#aspect = width / height;
   }
 
   GetProjection() {

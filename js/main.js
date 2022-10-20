@@ -30,7 +30,7 @@ function main() {
   }
 
 
-  //-------------------Shader-------------------//
+  //-------------------Shader-------------------//\
   const vsSource = `
     attribute vec4 aVertexPosition;
     attribute vec4 aVertexColor;
@@ -55,7 +55,7 @@ function main() {
   const shader = new Shader(vsSource, fsSource);
 
   //-------------------Camera-------------------//
-  const camera = new Camera();
+  const camera = new Camera(gl.canvas.clientWidth, gl.canvas.clientHeight);
 
   //-------------------Render Loop-------------------//
   let lastFrame = 0;
