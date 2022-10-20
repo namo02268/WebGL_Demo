@@ -15,29 +15,16 @@ function main() {
     return;
   }
 
-  const vsSource = `
-    attribute vec4 aVertexPosition;
-    attribute vec4 aVertexColor;
+  let lastFrame = 0;
 
-    uniform mat4 uModelViewMatrix;
-    uniform mat4 uProjectionMatrix;
+  function render(currentFrame) {
+    currentFrame *= 0.001;
+    const deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
 
-    varying lowp vec4 vColor;
+    drawScene(deltaTime);
 
-    void main() {
-      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-      vColor = aVertexColor;
-    }
-  `;
-
-  const fsSource = `
-    varying lowp vec4 vColor;
-
-    void main() {
-      gl_FragColor = vColor;
-    }
-  `;
-
-  const shader = new Shader(vsSource, fsSource);
-  drawScene(gl, shader);
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
 }

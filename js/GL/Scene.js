@@ -1,15 +1,16 @@
-function drawScene(gl, shader) {
+let squareRotation = 0.0;
+
+function drawScene(deltaTime) {
+  //-------------------Buffer-------------------//
   const positions = [1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, -1.0];
+  const positionBuffer = new Buffer(gl);
+  positionBuffer.SetData(positions);
   const colors = [
     1.0, 1.0, 1.0, 1.0,
     1.0, 0.0, 0.0, 1.0,
     0.0, 1.0, 0.0, 1.0,
     0.0, 0.0, 1.0, 1.0,
   ];
-
-  //-------------------Buffer-------------------//
-  const positionBuffer = new Buffer(gl);
-  positionBuffer.SetData(positions);
   const colorBuffer = new Buffer(gl);
   colorBuffer.SetData(colors);
 
@@ -19,6 +20,30 @@ function drawScene(gl, shader) {
   gl.enable(gl.DEPTH_TEST); // Enable depth testing
   gl.depthFunc(gl.LEQUAL); // Near things obscure far things
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+  //-------------------Shader-------------------//
+  const vsSource = `
+    attribute vec4 aVertexPosition;
+    attribute vec4 aVertexColor;
+
+    uniform mat4 uModelViewMatrix;
+    uniform mat4 uProjectionMatrix;
+
+    varying lowp vec4 vColor;
+
+    void main() {
+      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+      vColor = aVertexColor;
+    }
+  `;
+  const fsSource = `
+    varying lowp vec4 vColor;
+
+    void main() {
+      gl_FragColor = vColor;
+    }
+  `;
+  const shader = new Shader(vsSource, fsSource);
 
   //-------------------Camera-------------------//
   const fieldOfView = (45 * Math.PI) / 180; // in radians
@@ -30,8 +55,10 @@ function drawScene(gl, shader) {
   mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
   const modelViewMatrix = mat4.create();
   mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
+  squareRotation += deltaTime;
+  mat4.rotate(modelViewMatrix, modelViewMatrix, squareRotation, [0, 0, 1]);
 
-  //-------------------A-------------------//
+  //-------------------Model-------------------//
   {
     const numComponents = 2
     const type = gl.FLOAT;
@@ -67,6 +94,7 @@ function drawScene(gl, shader) {
     );
     gl.enableVertexAttribArray(shader.GetAttribLocation("aVertexColor"));
   }
+
 
   shader.Bind();
   shader.SetUniformMatrix4("uProjectionMatrix", projectionMatrix);
