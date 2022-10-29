@@ -15,47 +15,9 @@ function main() {
     return;
   }
 
-  //-------------------Buffer-------------------//
-  const positionBuffer = new VertexBuffer();
-  positionBuffer.SetData(Box.positions);
-  const colorBuffer = new VertexBuffer();
-  colorBuffer.SetData(Box.colors);
-  const indexBuffer = new IndexBuffer();
-  indexBuffer.SetData(Box.indices);
-
-  buffers = {
-    position: positionBuffer,
-    color: colorBuffer,
-    index: indexBuffer,
-  }
-
-
-  //-------------------Shader-------------------//\
-  const vsSource = `
-    attribute vec4 aVertexPosition;
-    attribute vec4 aVertexColor;
-
-    uniform mat4 uModelViewMatrix;
-    uniform mat4 uProjectionMatrix;
-
-    varying lowp vec4 vColor;
-
-    void main() {
-      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-      vColor = aVertexColor;
-    }
-  `;
-  const fsSource = `
-    varying lowp vec4 vColor;
-
-    void main() {
-      gl_FragColor = vColor;
-    }
-  `;
-  const shader = new Shader(vsSource, fsSource);
-
-  //-------------------Camera-------------------//
-  const camera = new Camera(gl.canvas.clientWidth, gl.canvas.clientHeight);
+  //-------------------Init Scene-------------------//
+  const scene = new Scene();
+  scene.Init();
 
   //-------------------Render Loop-------------------//
   let lastFrame = 0;
@@ -64,7 +26,7 @@ function main() {
     const deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    drawScene(deltaTime, camera, shader, buffers);
+    scene.Draw(deltaTime);
 
     requestAnimationFrame(render);
   }
