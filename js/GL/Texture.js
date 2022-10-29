@@ -16,9 +16,9 @@ class Texture {
     gl.bindTexture(gl.TEXTURE_2D, this.#m_handle);
   }
 
-  Load(pass) {
+  Load(path) {
     const image = new Image();
-    image.src = pass;
+    image.src = path;
 
     image.onload = () => {
       this.#m_width = image.width;
