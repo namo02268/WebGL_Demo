@@ -53,7 +53,7 @@ class Scene {
     //-------------------Init Texture-------------------//
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     this.#texture = new Texture();
-    this.#texture.Load("../images/img1.jpg");
+    this.#texture.Load("./images/img.jpg");
   }
 
   Draw(deltaTime) {
