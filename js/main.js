@@ -1,9 +1,6 @@
 let gl;
 window.onload = main;
 
-//
-// Start here
-//
 function main() {
   //-------------------Init GL-------------------//
   const canvas = document.querySelector("#glCanvas");

@@ -6,7 +6,12 @@ class Scene {
   #buffers;
   #texture;
 
+  constructor() { }
+
   Init() {
+    gl.enable(gl.DEPTH_TEST); // Enable depth testing
+    gl.depthFunc(gl.LEQUAL); // Near things obscure far things
+
     //-------------------Init Camera-------------------//
     this.#camera = new Camera(gl.canvas.clientWidth, gl.canvas.clientHeight);
 
@@ -81,8 +86,6 @@ class Scene {
     //-------------------Clear-------------------//
     gl.clearColor(0.2, 0.2, 0.2, 1.0); // Clear to black, fully opaque
     gl.clearDepth(1.0); // Clear everything
-    gl.enable(gl.DEPTH_TEST); // Enable depth testing
-    gl.depthFunc(gl.LEQUAL); // Near things obscure far things
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     //-------------------Camera-------------------//
