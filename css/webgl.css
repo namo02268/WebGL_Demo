@@ -3,7 +3,7 @@
 }
 
 canvas {
-  background-color: block;
+  background-color: black;
   display: block;
   /* prevents scrollbar */
   width: 100vw;
